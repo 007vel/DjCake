@@ -13,7 +13,7 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Debug"); // Default to Debug
-var device = Argument("device", "android-arm64"); // Default to android-arm64
+var device = Argument("device", "android-x64"); // Default to android-arm64
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
