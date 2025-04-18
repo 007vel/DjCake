@@ -1,0 +1,56 @@
+//////////////////////////////////////////////////////////////////////
+// PREPROCESSOR DIRECTIVES
+//////////////////////////////////////////////////////////////////////
+
+#addin nuget:?package=Cake.Powershell
+#addin nuget:?package=Cake.DotNetTool.Module&version=5.0.0
+
+
+
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
+
+var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Debug"); // Default to Debug
+var device = Argument("device", "android-arm64"); // Default to android-arm64
+
+//////////////////////////////////////////////////////////////////////
+// TASKS
+//////////////////////////////////////////////////////////////////////
+
+// Clean Task
+Task("Clean")
+    .Does(() =>
+{
+    CleanDirectory($"./DJcakeMaui/bin/{configuration}");
+    CleanDirectory($"./DJcakeMaui/obj/{configuration}");
+});
+
+
+
+// Build-Android Task
+Task("Build-Android")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    DotNetBuild("./DJcakeMaui.csproj", new DotNetBuildSettings
+    {
+        Configuration = configuration,
+        Runtime = device
+    });
+});
+
+
+
+
+
+// Default Task
+Task("Default")
+    .IsDependentOn("Build-Android");
+
+//////////////////////////////////////////////////////////////////////
+// EXECUTION
+//////////////////////////////////////////////////////////////////////
+
+RunTarget(target);
